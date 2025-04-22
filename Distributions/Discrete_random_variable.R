@@ -9,7 +9,7 @@ dztbinom <- function(k,n,p) {
   trunc_factor <- 1 - (1 - p)^n
   return (binom_prob/trunc_factor)
 }
-# cumulative distribution (CDF)
+# Cumulative distribution (CDF)
 pztbinom <- function(k,n,p) {
   sapply(k, function(x) sum(dztbinom(1:x, n, p)))
 }
