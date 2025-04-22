@@ -30,3 +30,28 @@ ggplot(pmf_df, aes(x = k, y = PMF)) + geom_bar(stat="identity") + labs(title = "
 # plot of cdf
 cdf_df <- data.frame(k= k_vals, CDF = cdf)
 ggplot(cdf_df, aes(x = k, y = CDF)) + geom_step() + labs(title = "Zero-Truncated Binomial CDF", x = "k", y = "P(X ≤ k)") + theme_minimal()
+
+# mean
+mean_ztb <- sum(k_vals * pmf)
+
+# variance
+var_ztb <- sum((k_vals^2) * pmf) - mean_ztb^2
+
+
+cat("ZTB Mean:", mean_ztb, "\n")
+cat("ZTB Variance:", var_ztb, "\n")
+
+# standard binomial
+mean_binom <- n * p
+var_binom <- n * p * (1 - p)
+
+p0 <- dbinom(0, size = n, prob =p)
+
+mean_ztb_theoretical <- mean_binom/(1 - p0)
+var_ztb_theoretical <- (var_binom / (1 - p0)) + (p0 / (1-p0)^2 * mean_binom^2)
+
+cat("ZTB Analytical Mean:", mean_ztb_theoretical, "\n")
+cat("ZTB Analytical Variance:", var_ztb_theoretical, "\n")
+
+cat("Standard Binomial Mean:", mean_binom, "\n")
+cat("Standard Binomial Variance:", var_binom, "\n")
