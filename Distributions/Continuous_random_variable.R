@@ -29,3 +29,9 @@ cdf_vals <- cdf_E(E_vals)
 plot(E_vals, cdf_vals, type = "l",xlab = "Energy E (GeV)", ylab = "CDF", main = "Cumulative Distribution Function (CDF)")
 
 # Part d
+mean_integrand <- function(E) {
+  E * ifelse(E < E0, N, N * (E - E0 + 1)^(-gamma))
+}
+mean_val <- integrate(mean_integrand, lower= 0, upper= Inf)$value
+
+cat("Mean energy (expected value) =", mean_val, "GeV\n")
