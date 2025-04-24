@@ -35,3 +35,21 @@ mean_integrand <- function(E) {
 mean_val <- integrate(mean_integrand, lower= 0, upper= Inf)$value
 
 cat("Mean energy (expected value) =", mean_val, "GeV\n")
+
+# Part e
+set.seed(42)
+sample_size <- 1e6
+max_E <- 100
+
+accepted <- c()
+while(length(accepted) < sample_size) {
+  E_candidate <- runif(sample_size, min=0, max=max_E)
+  u <- runif(sample_size)
+  p_vals <- p_E(E_candidate)
+  accept <- E_candidate[u < p_vals/N]
+  accepted <- c(accepted, accept)
+  accepted <- accepted[1:sample_size]
+}
+
+hist(accepted, breaks= 100, probability= TRUE, main = "Histogram of Simulated Energies (Z)", xlab = "Energy (GeV)", xlim = c(0, 100))
+curve(p_E, from = 0, to = 100, add = TRUE, col = "red", lwd=2)
