@@ -26,3 +26,9 @@ cat("Number of people who know the rumor after 15 interactions:", total_knowers,
 mean_known <- mean(final_counts)
 
 cat("Average number of people who know the rumor after 15 interactions:", mean_known, "\n")
+
+# Part c
+threshold <- 500
+markov_bound <- mean_known / threshold
+
+cat("Upper bound for P(X ≥ 500) using Markov's inequality:", markov_bound, "\n")
