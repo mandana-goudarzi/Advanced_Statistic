@@ -66,3 +66,21 @@ cat("Numerical Posterior Median:", median, "\n")
 cat("Numerical Posterior Variance:", var, "\n")
 
 # part c
+sd_unif <- sqrt(alpha/(beta^2))
+
+ci_unif <- qgamma(c(0.025, 0.975), shape=alpha, rate=beta)
+
+#normal approx using same mean and sd
+ci_unif_norm <- mean_post + qnorm(c(0.025, 0.975)) * sd_unif
+
+sd_gamma <- sqrt(alpha_post/(beta_post^2))
+
+ci_gamma <- qgamma(c(0.025, 0.975), shape= alpha_post, rate=beta_post)
+ci_gamma_norm <- mean_poster + qnorm(c(0.025, 0.975)) * sd_gamma
+
+cat("Uniform prior posterior (Gamma(12, 5)):\n")
+cat("95% credibility interval (Gamma):", ci_unif, "\n")
+cat("95% credibility interval (normal approx):", ci_unif_norm, "\n\n")
+cat("Informative Gamma prior posterior (Gamma(15, 7)):\n")
+cat("95% credibility interval (Gamma):", ci_gamma, "\n")
+cat("95% credibility interval (normal approx):", ci_gamma_norm)
