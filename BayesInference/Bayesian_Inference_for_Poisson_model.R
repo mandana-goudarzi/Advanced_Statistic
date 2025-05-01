@@ -32,3 +32,37 @@ var_num <- var(posterior_samples)
 cat("\nNumerical Posterior Mean:", mean_num, "\n")
 cat("Numerical Posterior Median:", median_num, "\n")
 cat("Numerical Posterior Variance:", var_num, "\n")
+
+# Part b
+alpha_prior <- 4
+beta_prior <- 2
+
+alpha_post <- alpha_prior + sum_x
+beta_post <- beta_prior + n
+
+posterior_vals <- dgamma(mu_vals, shape= alpha_post, rate=beta_post)
+
+plot(mu_vals, posterior_vals, type="l" ,lwd = 2, main = "Posterior Distribution of μ (Gamma Prior)", xlab = expression(mu), ylab="Density" )
+
+#analytical
+mean_poster <- alpha_post/ beta_post
+var_poster <- alpha_post/(beta_post^2)
+median_poster <- qgamma(0.5, shape=alpha_post, rate=beta_post)
+
+cat("Analytical Posterior Mean:", mean_poster, "\n")
+cat("Analytical Posterior Median:", median_poster, "\n")
+cat("Analytical Posterior Variance:", var_poster, "\n")
+
+#numerica
+set.seed(42)
+poster_samples <-rgamma(10000, shape=alpha_post, rate=beta_post)
+
+mean <- mean(poster_samples)
+median <- median(poster_samples)
+var <- var(poster_samples)
+
+cat("\nNumerical Posterior Mean:", mean, "\n")
+cat("Numerical Posterior Median:", median, "\n")
+cat("Numerical Posterior Variance:", var, "\n")
+
+# part c
