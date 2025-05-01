@@ -48,3 +48,21 @@ lines(mu_vals, post_jeff, lwd = 2, col = "red", lty = 2)
 legend("topright", legend = c("Uniform Prior (Beta(13,9))",
                               "Jeffrey's Prior (Beta(12.5,8.5))"),
        col = c("blue", "red"), lty = c(1, 2), lwd = 2)
+
+#Part c
+n_b <- 10
+r_b <- 10
+
+a_prior <- 1
+b_prior <- 1
+
+a_post_b <- a_prior + r_b
+b_post_b <- b_prior + n_b - r_b
+
+mean_b <- a_post_b / (a_post_b + b_post_b)
+sd_b <- sqrt((a_post_b * b_post_b) /
+               (((a_post_b + b_post_b)^2) * (a_post_b + b_post_b + 1)))
+
+cat("Researcher B's Posterior (Uniform Prior → Beta(11,1))\n")
+cat("  Mean:", mean_b, "\n")
+cat("  Standard Deviation:", sd_b, "\n")
