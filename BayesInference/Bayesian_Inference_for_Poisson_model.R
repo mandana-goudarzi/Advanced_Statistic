@@ -1,0 +1,34 @@
+# Part a
+
+x <- c(3, 0, 1, 5, 2)
+n <- length(x) # number of observations (5 days)
+sum_x <- sum(x) # total number of defects
+
+alpha <- sum_x + 1
+beta <- n
+
+mu_vals <- seq(0, 10, length.out = 1000)
+posterior_vals <- dgamma(mu_vals, shape = alpha, rate = beta)
+
+plot(mu_vals, posterior_vals, type = "l", lwd = 2, main = "Posterior Distribution of μ", xlab = expression(mu), ylab="Density")
+
+#analytical
+mean_post <- alpha/beta
+var_post <- alpha/ (beta^2)
+median_post <- qgamma(0.5, shape=alpha,rate=beta)
+
+cat("Analytical Posterior Mean:", mean_post, "\n")
+cat("Analytical Posterior Median:", median_post, "\n")
+cat("Analytical Posterior Variance:", var_post, "\n")
+
+#numerical
+set.seed(42)
+posterior_samples <- rgamma(10000, shape=alpha, rate=beta)
+
+mean_num <- mean(posterior_samples)
+median_num <- median(posterior_samples)
+var_num <- var(posterior_samples)
+
+cat("\nNumerical Posterior Mean:", mean_num, "\n")
+cat("Numerical Posterior Median:", median_num, "\n")
+cat("Numerical Posterior Variance:", var_num, "\n")
