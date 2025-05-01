@@ -88,3 +88,9 @@ posterior_d <- dbeta(mu_vals, shape1 = a_post_d, shape2 = b_post_d)
 plot(mu_vals, posterior_d, type = "l", lwd = 2, col = "purple",
      main = "Posterior of μ After Updating with Researcher A's Data",
      xlab = expression(mu), ylab = "Density")
+
+# Part d
+cred_int <- qbeta(c(0.025, 0.975), shape1=a_post_d, shape2=b_post_d)
+cat("95% Credible Interval for μ (Posterior Beta(23, 9)):\n")
+cat("  Lower bound:",cred_int[1], "\n")
+cat("  Upper bound:",cred_int[2], "\n")
