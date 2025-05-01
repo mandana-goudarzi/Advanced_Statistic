@@ -66,3 +66,25 @@ sd_b <- sqrt((a_post_b * b_post_b) /
 cat("Researcher B's Posterior (Uniform Prior → Beta(11,1))\n")
 cat("  Mean:", mean_b, "\n")
 cat("  Standard Deviation:", sd_b, "\n")
+
+# Part d
+a_prior_d <- 11
+b_prior_d <- 1
+
+a_post_d <- a_prior_d + r
+b_post_d <- b_prior_d + n - r
+
+mean_d <- a_post_d / (a_post_d + b_post_d)
+sd_d <- sqrt((a_post_d * b_post_d) /
+               (((a_post_d + b_post_d)^2) * (a_post_d + b_post_d + 1)))
+
+cat("Updated Posterior Using Researcher B's Posterior as Prior:\n")
+cat("  Posterior: Beta(23, 9)\n")
+cat("  Mean:",mean_d, "\n")
+cat("  Standard Deviation:",sd_d, "\n")
+
+posterior_d <- dbeta(mu_vals, shape1 = a_post_d, shape2 = b_post_d)
+
+plot(mu_vals, posterior_d, type = "l", lwd = 2, col = "purple",
+     main = "Posterior of μ After Updating with Researcher A's Data",
+     xlab = expression(mu), ylab = "Density")
