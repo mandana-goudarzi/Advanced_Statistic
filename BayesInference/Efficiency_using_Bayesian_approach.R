@@ -33,3 +33,18 @@ cat("  SD  :", sd_unif, "\n\n")
 cat("Jeffrey's Prior (Beta(0.5,0.5)) Posterior: Beta(12.5,8.5)\n")
 cat("  Mean:", mean_jeff, "\n")
 cat("  SD  :", sd_jeff, "\n")
+
+# Part b
+mu_vals <- seq(0,1 , length.out=1000)
+
+post_unif <- dbeta(mu_vals, shape1=a_post_unif, shape2=b_post_unif)
+post_jeff <- dbeta(mu_vals, shape1=a_post_jeff, shape2=b_post_jeff)
+
+plot(mu_vals, post_unif, type="l", lwd=2, ylab = "Density", xlab = expression(mu),
+     main = "Posterior Distributions of μ", ylim = c(0, max(post_unif, post_jeff)))
+
+lines(mu_vals, post_jeff, lwd = 2, col = "red", lty = 2)
+
+legend("topright", legend = c("Uniform Prior (Beta(13,9))",
+                              "Jeffrey's Prior (Beta(12.5,8.5))"),
+       col = c("blue", "red"), lty = c(1, 2), lwd = 2)
