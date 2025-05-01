@@ -84,3 +84,19 @@ cat("95% credibility interval (normal approx):", ci_unif_norm, "\n\n")
 cat("Informative Gamma prior posterior (Gamma(15, 7)):\n")
 cat("95% credibility interval (Gamma):", ci_gamma, "\n")
 cat("95% credibility interval (normal approx):", ci_gamma_norm)
+
+alpha_alt <- 1
+beta_alt <- 0.5
+
+alpha_post_alt <- alpha_alt + sum_x
+beta_post_alt <- beta_alt + n
+
+mean_alt <- alpha_post_alt / beta_post_alt
+sd_alt <- sqrt(alpha_post_alt / beta_post_alt^2)
+
+ci_alt <- qgamma(c(0.025, 0.975), shape = alpha_post_alt, rate = beta_post_alt)
+ci_alt_norm <- mean_alt + qnorm(c(0.025, 0.975)) * sd_alt
+
+cat("\nAlternative Prior Posterior (Gamma(12, 5.5)):\n")
+cat(" - 95% Credibility Interval (Gamma):", ci_alt, "\n")
+cat(" - 95% Credibility Interval (Normal Approx):", ci_alt_norm, "\n")
