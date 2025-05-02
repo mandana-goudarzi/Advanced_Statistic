@@ -72,3 +72,13 @@ ggplot(result, aes(x=trial)) + geom_line(aes(y=mode), color = "darkgreen", na.rm
   theme_minimal()
 
 # Part d
+posterior_batch <- dbeta(seq(0,1,length.out=1000), 14, 16)
+
+a_seq <- 14  # 1 + 13 heads
+b_seq <- 16  # 1 + 15 tails
+posterior_seq <- dbeta(seq(0,1,length.out=1000), a_seq, b_seq)
+
+all.equal(posterior_batch, posterior_seq)
+cat("No, we do not get a different result.
+In Bayesian inference using conjugate priors (like the Beta-Binomial model), updating the posterior sequentially or all at once produces the same final posterior distribution.
+In both cases, starting from a Beta(1,1) prior and observing 13 heads and 15 tails leads to the posterior Beta(14,16).")
