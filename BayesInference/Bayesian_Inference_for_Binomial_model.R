@@ -1,3 +1,5 @@
+library(ggplot2)
+library(dplyr)
 # Part a
 n <- 28
 r <- 13
@@ -41,3 +43,32 @@ cat("  Mode (Most Probable p):", mode_beta, "\n")
 cat("  95% Credible Interval:", ci_beta[1], ci_beta[2], "\n")
 
 # Part c
+flips <- c(0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1)
+# starting from prior
+a <- 1 #number of heads
+b <- 1 #number of tails
+
+result <- data.frame(trial = 1:length(flips), heads = NA, tails = NA, mode= NA, ci_low= NA, ci_high= NA)
+
+for (i in 1:length(flips)) {
+  a <- a + flips[i]
+  b <- b + (1 - flips[i])
+  result$heads[i] <- a - 1
+  result$tails[i] <- b - 1
+  if (a > 1 && b > 1) {
+    result$mode[i] <- (a-1)/(a+b-2) 
+  } else {
+    result$mode[i] <- NA
+  }
+  result$ci_low[i] <- qbeta(0.025, shape1=a, shape2=b)
+  result$ci_high[i] <- qbeta(0.975, shape1=a, shape2=b)
+}
+
+ggplot(result, aes(x=trial)) + geom_line(aes(y=mode), color = "darkgreen", na.rm = TRUE) +
+  geom_ribbon(aes(ymin=ci_low, ymax=ci_high), alpha = 0.2, fill = "skyblue") +
+  labs(title = "Sequential Bayesian Updating",
+       subtitle = "Most Probable Value and 95% Credible Interval of p",
+       x = "Number of Coin Tosses", y = "Estimated p (probability of heads)") +
+  theme_minimal()
+
+# Part d
