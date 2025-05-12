@@ -82,3 +82,105 @@ ggplot(df, aes(x = beta, y = density)) +
     y = "Posterior Density"
   ) +
   theme_minimal()
+
+#part d
+prior_scaled <- prior / max(prior)
+likelihood <- exp(log_likelihood)
+likelihood_scaled <- likelihood / max(likelihood)
+posterior_scaled <- posterior / max(posterior)
+
+df <- data.frame(
+  beta = beta_grid,
+  Prior = prior_scaled,
+  Likelihood = likelihood_scaled,
+  Posterior = posterior_scaled
+)
+
+library(tidyr)
+
+df_long <- pivot_longer(df, cols = c("Prior", "Likelihood", "Posterior"),
+                        names_to = "Distribution", values_to = "Density")
+
+ggplot(df_long, aes(x = beta, y = Density, color = Distribution)) +
+  geom_line(size = 1.2) +
+  labs(
+    title = "Prior, Likelihood, and Posterior Distributions of β",
+    x = "β",
+    y = "Scaled Density"
+  ) +
+  scale_color_manual(values = c("Prior" = "orange", "Likelihood" = "darkgreen", "Posterior" = "steelblue")) +
+  theme_minimal()
+
+#optional
+prior_uniform <- rep(1, length(beta_grid))
+
+log_likelihood_uniform <- sapply(beta_grid, function(b) {
+  sum(dbeta(x, shape1 = alpha, shape2 = b, log = TRUE))
+})
+
+unnorm_post_uniform <- exp(log_likelihood_uniform) * prior_uniform
+
+posterior_uniform <- unnorm_post_uniform / sum(unnorm_post_uniform * delta_beta)
+
+posterior_mean_u <- sum(beta_grid * posterior_uniform * delta_beta)
+posterior_sd_u <- sqrt(sum((beta_grid - posterior_mean_u)^2 * posterior_uniform * delta_beta))
+
+cat("Posterior mean (uniform prior):", posterior_mean_u, "\n")
+cat("Posterior SD (uniform prior):", posterior_sd_u, "\n")
+
+posterior_cdf_u <- cumsum(posterior_uniform * delta_beta)
+
+lower_index_u <- which.min(abs(posterior_cdf_u - 0.025))
+upper_index_u <- which.min(abs(posterior_cdf_u - 0.975))
+beta_lower_u <- beta_grid[lower_index_u]
+beta_upper_u <- beta_grid[upper_index_u]
+
+cat("95% credibility interval (uniform prior): [",
+    beta_lower_u, ",", beta_upper_u, "]\n")
+
+
+df_u <- data.frame(
+  beta = beta_grid,
+  density = posterior_uniform
+)
+
+ggplot(df_u, aes(x = beta, y = density)) +
+  geom_line(color = "steelblue", size = 1.2) +
+  geom_vline(xintercept = posterior_mean_u, color = "red", linetype = "dashed", linewidth = 1.2) +
+  geom_vline(xintercept = posterior_mean_u - posterior_sd_u, color = "darkgreen", linetype = "dotted") +
+  geom_vline(xintercept = posterior_mean_u + posterior_sd_u, color = "darkgreen", linetype = "dotted") +
+  geom_vline(xintercept = beta_lower_u, color = "purple", linetype = "dotdash") +
+  geom_vline(xintercept = beta_upper_u, color = "purple", linetype = "dotdash") +
+  annotate("text", x = posterior_mean_u, y = max(posterior_uniform) * 0.9, label = "Mean", color = "red", angle = 90, vjust = -0.5) +
+  annotate("text", x = beta_lower_u, y = max(posterior_uniform) * 0.8, label = "2.5%", color = "purple", angle = 90, vjust = -0.5) +
+  annotate("text", x = beta_upper_u, y = max(posterior_uniform) * 0.8, label = "97.5%", color = "purple", angle = 90, vjust = -0.5) +
+  labs(
+    title = "Posterior Distribution of β (Uninformative Prior)",
+    x = "β",
+    y = "Posterior Density"
+  ) +
+  theme_minimal()
+
+prior_scaled_u <- prior_uniform / max(prior_uniform)
+likelihood_scaled_u <- exp(log_likelihood_uniform) / max(exp(log_likelihood_uniform))
+posterior_scaled_u <- posterior_uniform / max(posterior_uniform)
+
+df_all_u <- data.frame(
+  beta = beta_grid,
+  Prior = prior_scaled_u,
+  Likelihood = likelihood_scaled_u,
+  Posterior = posterior_scaled_u
+)
+
+df_long_u <- pivot_longer(df_all_u, cols = c("Prior", "Likelihood", "Posterior"),
+                          names_to = "Distribution", values_to = "Density")
+
+ggplot(df_long_u, aes(x = beta, y = Density, color = Distribution)) +
+  geom_line(size = 1.2) +
+  labs(
+    title = "Prior, Likelihood, and Posterior (Uninformative Prior)",
+    x = "β",
+    y = "Scaled Density"
+  ) +
+  scale_color_manual(values = c("Prior" = "orange", "Likelihood" = "darkgreen", "Posterior" = "steelblue")) +
+  theme_minimal()
