@@ -46,3 +46,39 @@ beta_upper <- beta_grid[upper_index]
 
 cat("95% Credibility Interval for beta:\n")
 cat("[", beta_lower, ",", beta_upper, "]\n")
+
+#part c
+library(ggplot2)
+
+df <- data.frame(
+  beta = beta_grid,
+  density = posterior
+)
+
+
+ggplot(df, aes(x = beta, y = density)) +
+  geom_line(color = "steelblue", size = 1.2) +
+  
+  # Mean line
+  geom_vline(xintercept = posterior_mean, color = "red", linetype = "dashed", linewidth = 1.2) +
+  
+  # SD area (mean ± 1 sd)
+  geom_vline(xintercept = posterior_mean - posterior_sd, color = "darkgreen", linetype = "dotted", linewidth = 1) +
+  geom_vline(xintercept = posterior_mean + posterior_sd, color = "darkgreen", linetype = "dotted", linewidth = 1) +
+  
+  # 95% credibility interval
+  geom_vline(xintercept = beta_lower, color = "purple", linetype = "dotdash", linewidth = 1) +
+  geom_vline(xintercept = beta_upper, color = "purple", linetype = "dotdash", linewidth = 1) +
+  
+  annotate("text", x = posterior_mean, y = max(posterior) * 0.9, label = "Mean", color = "red", angle = 90, vjust = -0.5) +
+  annotate("text", x = posterior_mean - posterior_sd, y = max(posterior) * 0.8, label = "-1 SD", color = "darkgreen", angle = 90, vjust = -0.5) +
+  annotate("text", x = posterior_mean + posterior_sd, y = max(posterior) * 0.8, label = "+1 SD", color = "darkgreen", angle = 90, vjust = -0.5) +
+  annotate("text", x = beta_lower, y = max(posterior) * 0.7, label = "2.5%", color = "purple", angle = 90, vjust = -0.5) +
+  annotate("text", x = beta_upper, y = max(posterior) * 0.7, label = "97.5%", color = "purple", angle = 90, vjust = -0.5) +
+  
+  labs(
+    title = "Posterior Distribution of β",
+    x = "β",
+    y = "Posterior Density"
+  ) +
+  theme_minimal()
