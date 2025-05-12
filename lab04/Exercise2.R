@@ -33,3 +33,16 @@ posterior_sd <- sqrt(sum((beta_grid - posterior_mean)^2 * posterior * diff(beta_
 
 cat("Posterior mean of beta:", posterior_mean, "\n")
 cat("Posterior SD of beta:", posterior_sd, "\n")
+
+#part b
+delta_beta <- diff(beta_grid)[1]
+posterior_cdf <- cumsum(posterior * delta_beta)
+
+lower_index <- which.min(abs(posterior_cdf - 0.025))
+upper_index <- which.min(abs(posterior_cdf - 0.975))
+
+beta_lower <- beta_grid[lower_index]
+beta_upper <- beta_grid[upper_index]
+
+cat("95% Credibility Interval for beta:\n")
+cat("[", beta_lower, ",", beta_upper, "]\n")
