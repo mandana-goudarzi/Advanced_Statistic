@@ -83,3 +83,6 @@ ggplot(df, aes(x = p, y = density)) +
   scale_fill_manual(values = c("less_than_0.15" = "steelblue", "greater_equal_0.15" = "gray80"),
                     labels = c("< 0.15", "≥ 0.15")) +
   theme_minimal()
+
+#part e
+binom.test(x = y, n = n, p = threshold, alternative = "less", conf.level = 0.95)
