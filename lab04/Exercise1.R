@@ -53,3 +53,33 @@ ggplot(df, aes(x = p, y = density)) +
     y = "Density"
   ) +
   theme_minimal()
+
+#part d
+threshold <- 0.15
+post_prob <- pbeta(threshold, alpha_post, beta_post)
+
+cat("P(p < 0.15 | data) =", post_prob, "\n")
+
+if (post_prob > 0.95) {
+  cat("Reject H0: Evidence suggests the new test is better (failure rate < 15%)\n")
+} else {
+  cat("Do not reject H0: Not enough evidence that the new test is better\n")
+}
+
+df$region <- ifelse(df$p < threshold, "less_than_0.15", "greater_equal_0.15")
+
+ggplot(df, aes(x = p, y = density)) +
+  geom_area(aes(fill = region), alpha = 0.6) +
+  geom_line(color = "black", size = 1) +
+  geom_vline(xintercept = threshold, linetype = "dashed", color = "red", linewidth = 1) +
+  geom_vline(xintercept = alpha_post / (alpha_post + beta_post), color = "blue", linetype = "dotted", linewidth = 1) +
+  labs(
+    title = "Posterior Distribution of Failure Rate p",
+    subtitle = paste("Shaded area = P(p < 0.15) =", pbeta(threshold, alpha_post, beta_post)),
+    x = "Failure Probability p",
+    y = "Posterior Density",
+    fill = "Region"
+  ) +
+  scale_fill_manual(values = c("less_than_0.15" = "steelblue", "greater_equal_0.15" = "gray80"),
+                    labels = c("< 0.15", "≥ 0.15")) +
+  theme_minimal()
