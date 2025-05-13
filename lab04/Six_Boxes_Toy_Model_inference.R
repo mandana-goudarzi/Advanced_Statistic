@@ -38,6 +38,8 @@ for (trial in 1:num_trials) {
     cat(sprintf("%s: %.4f  ", box_labels[i], posteriors[i]))
   }
   cat("\n\n")
+  most_likely <- which.max(posteriors)
+  cat("Most likely box after Trial", trial, ":", box_labels[most_likely], "\n\n")
 
   belief_history <- rbind(belief_history, posteriors)
 }
