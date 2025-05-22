@@ -1,0 +1,17 @@
+
+model {
+  for (i in 1:N) {
+    x[i] ~ dnorm(m, prec)
+  }
+
+  # Prior for the mean
+  m ~ dunif(-10, 30)
+
+  # Prior for the precision
+  prec ~ dgamma(0.01, 0.01)  # vague prior
+
+  # Derived quantities
+  s <- 1 / sqrt(prec)
+  ratio <- m / s
+}
+
