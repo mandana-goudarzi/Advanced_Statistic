@@ -1,7 +1,7 @@
 set.seed(42)
 
 n <- 100           
-xmin <- 10         # min value
+xmin <- 10         
 alpha <- 2.5       
 
 # Inverse transform sampling
@@ -63,6 +63,9 @@ hist(as.matrix(samples_normal), col = "lightgreen", breaks = 40, main = "Posteri
 abline(v = alpha, col = "red", lwd = 2, lty = 2)
 abline(v = alpha_hat, col = "blue", lwd = 2, lty = 3)
 
+plot(density(posterior_uniform[, "alpha"]), main = "Posterior Densities")
+lines(density(posterior_normal[, "alpha"]), col = "green")
+abline(v = alpha_mle, col = "red", lty = 2)
 library(modeest)
 
 posterior_uniform <- as.matrix(samples_uniform)
