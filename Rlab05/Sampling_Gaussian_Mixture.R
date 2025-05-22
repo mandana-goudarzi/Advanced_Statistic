@@ -30,15 +30,12 @@ metropolis_hastings <- function(n_iter, init, proposal_sd) {
 set.seed(42)
 samples <- metropolis_hastings(n_iter = 10000, init = 0, proposal_sd = 1)
 
-# histogram of the samples
 hist(samples, breaks = 50, probability = TRUE, col = "lightblue",
      main = "Samples from Gaussian Mixture using Metropolis-Hastings", xlab = "x")
 
-# overlay the true target distribution
 curve(g_target, from = -8, to = 8, add = TRUE, col = "red", lwd = 2)
 legend("topright", legend = c("Target GMM", "Sampled"), col = c("red", "lightblue"), lwd = 2)
 
-#analyzing mean and var
 mean_value <- mean(samples)
 variance_value <- var(samples)
 
@@ -49,7 +46,7 @@ mcmc_chain <- as.mcmc(samples)
 
 summary(mcmc_chain)
 
-#the trace and autocorrelation
+#trace and autocorrelation
 plot(mcmc_chain)
 acfplot(mcmc_chain)
 
@@ -57,7 +54,6 @@ burn_in <- 1000
 thin_interval <- 10
 samples_thinned <- samples[(burn_in + 1):length(samples)][seq(1, length(samples) - burn_in, by = thin_interval)]
 
-# Reanalyze with CODA
 mcmc_thinned <- as.mcmc(samples_thinned)
 summary(mcmc_thinned)
 plot(mcmc_thinned)
@@ -68,20 +64,17 @@ hist(samples, breaks = 50, col = "lightblue", probability = TRUE, main = "Origin
 hist(samples_thinned, breaks = 50, col = "orange", probability = TRUE, main = "After Burn-in + Thinning")
 
 analyze_chain <- function(samples, burn_in = 0, thinning = 1, label = "") {
-  #apply burn-in and thinning
   samples_processed <- samples[(burn_in + 1):length(samples)]
   samples_thinned <- samples_processed[seq(1, length(samples_processed), by = thinning)]
   
-  # Convert to mcmc object
+  #mcmc object
   mcmc_obj <- as.mcmc(samples_thinned)
   
-  # histogram of posterior distribution
   hist(samples_thinned, breaks = 50, probability = TRUE, 
        main = paste("Posterior (Burn-in:", burn_in, ", Thinning:", thinning, ")", label),
        col = "lightblue", xlab = "x")
   curve(g_target, from = -8, to = 8, add = TRUE, col = "red", lwd = 2)
   
-  # Plot ACF
   acf(samples_thinned, main = paste("ACF (Burn-in:", burn_in, ", Thinning:", thinning, ")", label))
   
   cat("\n--- Burn-in:", burn_in, "Thinning:", thinning, "---\n")
@@ -91,9 +84,9 @@ analyze_chain <- function(samples, burn_in = 0, thinning = 1, label = "") {
   return(list(samples = samples_thinned, mcmc = mcmc_obj))
 }
 
-par(mfrow = c(2, 2))  # For 2x2 plotting layout
+par(mfrow = c(2, 2))  
 
-# Try different configurations
+# different configurations
 res1 <- analyze_chain(samples, burn_in = 0, thinning = 1, label = "A")
 res2 <- analyze_chain(samples, burn_in = 1000, thinning = 1, label = "B")
 res3 <- analyze_chain(samples, burn_in = 1000, thinning = 5, label = "C")
