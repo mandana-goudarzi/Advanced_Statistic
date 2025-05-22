@@ -36,11 +36,11 @@ hist(samples, breaks = 50, probability = TRUE, col = "lightblue",
 curve(g_target, from = -8, to = 8, add = TRUE, col = "red", lwd = 2)
 legend("topright", legend = c("Target GMM", "Sampled"), col = c("red", "lightblue"), lwd = 2)
 
-mean_value <- mean(samples)
-variance_value <- var(samples)
+mean_val <- mean(samples)
+variance_val <- var(samples)
 
-cat("Estimated Mean:", mean_value, "\n")
-cat("Estimated Variance:", variance_value, "\n")
+cat("Estimated Mean:", mean_val, "\n")
+cat("Estimated Variance:", variance_val, "\n")
 library(coda)
 mcmc_chain <- as.mcmc(samples)
 
