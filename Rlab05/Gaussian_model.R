@@ -7,17 +7,11 @@ n <- length(data_x)
 model_string <- "
 model {
   for (i in 1:N) {
-    x[i] ~ dnorm(m, prec)
+    x[i] ~ dnorm(m, 1 / (s * s))
   }
 
-  # Prior for the mean
   m ~ dunif(-10, 30)
-
-  # Prior for the precision
-  prec ~ dgamma(0.01, 0.01)  # vague prior
-
-  # Derived quantities
-  s <- 1 / sqrt(prec)
+  s ~ dnorm(0, 1/2500)T(0,)  # truncated to positive, sd = 50
   ratio <- m / s
 }
 "
@@ -37,7 +31,9 @@ plot(samples)
 
 samples_matrix <- as.matrix(samples)
 hist(samples_matrix[, "ratio"], breaks = 50, col = "skyblue", main = "Posterior of m/s", xlab = "m/s")
-# Gelman-Rubin diagnostic
+# gelman-rubin diagnostic
 gelman.diag(samples)
 
 autocorr.diag(samples)
+traceplot(samples[, "m"])
+traceplot(samples[, "s"])
