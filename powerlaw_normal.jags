@@ -1,0 +1,10 @@
+
+model {
+  for (i in 1:N) {
+    zeros[i] ~ dpois(phi[i])
+    phi[i] <- -log(alpha - 1) + log(xmin) + alpha * log(x[i] / xmin)
+  }
+
+  alpha ~ dnorm(2.5, 1/100)
+}
+
