@@ -16,9 +16,7 @@ b_post1 <- b_prior + n1 - y1
 
 cat("Posterior distribution (Beta): Beta(", a_post1, ",", b_post1, ")\n")
 
-# ----------------------------
-# Part (c): Posterior mean, variance, 95% credible interval
-# ----------------------------
+# c): Posterior mean, variance, 95% credible interval
 
 post_mean1 <- a_post1 / (a_post1 + b_post1)
 post_var1 <- (a_post1 * b_post1) / ((a_post1 + b_post1)^2 * (a_post1 + b_post1 + 1))
@@ -28,9 +26,7 @@ cat("Bayesian estimator (mean):", post_mean1, "\n")
 cat("Bayesian variance:", post_var1, "\n")
 cat("95% credible interval:", ci1, "\n")
 
-# ----------------------------
-# Part (d): Hypothesis test (H0: p = 0.1 vs H1: p ≠ 0.1)
-# ----------------------------
+# d): Hypothesis test (H0: p = 0.1 vs H1: p ≠ 0.1)
 
 # Frequentist: Binomial test
 freq_test1 <- binom.test(y1, n1, p = 0.1, alternative = "two.sided")
@@ -43,16 +39,12 @@ if (0.1 < ci1[1] || 0.1 > ci1[2]) {
   cat("Bayesian: Do not reject H0 at 5% level\n")
 }
 
-# ============================
-# Second sample (one month later)
-# ============================
 
 n2 <- 165
 y2 <- 9
 
-# ----------------------------
-# Part (e): Frequentist estimator for p (second sample)
-# ----------------------------
+
+# e): Frequentist estimator for p (second sample)
 
 p_hat2 <- y2 / n2
 cat("\nFrequentist estimate of p (sample 2):", p_hat2, "\n")
