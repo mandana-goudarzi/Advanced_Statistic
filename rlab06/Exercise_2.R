@@ -44,12 +44,12 @@ n2 <- 165
 y2 <- 9
 
 
-# e): Frequentist estimator for p (second sample)
+# e) Frequentist estimator for p (second sample)
 
 p_hat2 <- y2 / n2
 cat("\nFrequentist estimate of p (sample 2):", p_hat2, "\n")
 
-# f): Update prior using posterior from part (b)
+# f) Update prior using posterior from part (b)
 
 a_prior2 <- a_post1
 b_prior2 <- b_post1
@@ -59,7 +59,7 @@ b_post2 <- b_prior2 + n2 - y2
 
 cat("Updated posterior after second sample: Beta(", a_post2, ",", b_post2, ")\n")
 
-# g): Posterior mean, variance, 95% credible interval
+# g) Posterior mean, variance, 95% credible interval
 
 post_mean2 <- a_post2 / (a_post2 + b_post2)
 post_var2 <- (a_post2 * b_post2) / ((a_post2 + b_post2)^2 * (a_post2 + b_post2 + 1))
@@ -69,7 +69,7 @@ cat("Bayesian estimator (mean):", post_mean2, "\n")
 cat("Bayesian variance:", post_var2, "\n")
 cat("95% credible interval:", ci2, "\n")
 
-# h): Hypothesis test for second sample
+# h) Hypothesis test for second sample
 
 # Frequentist
 freq_test2 <- binom.test(y2, n2, p = 0.1, alternative = "two.sided")
